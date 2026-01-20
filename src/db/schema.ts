@@ -7,7 +7,7 @@ import {
   boolean,
   decimal,
   varchar,
-  enum as pgEnum,
+  pgEnum,
   index,
   foreignKey,
 } from 'drizzle-orm/pg-core';
