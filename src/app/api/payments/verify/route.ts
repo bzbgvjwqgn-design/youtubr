@@ -41,13 +41,15 @@ export async function POST(req: NextRequest) {
         .where(eq(payments.id, payment.id));
 
       // Add to supporters public list
-      await db.insert(supportersPublic).values({
-        creatorId: payment.creatorId,
-        supporterName: payment.supporterName,
-        amount: payment.amount,
-        type: payment.type as any,
-        isAnonymous: payment.isAnonymous,
-      });
+      if (payment.supporterName) {
+        await db.insert(supportersPublic).values({
+          creatorId: payment.creatorId,
+          supporterName: payment.supporterName,
+          amount: payment.amount,
+          type: payment.type as any,
+          isAnonymous: payment.isAnonymous,
+        });
+      }
 
       // If monthly, create subscription
       if (payment.type === 'monthly') {
@@ -59,7 +61,7 @@ export async function POST(req: NextRequest) {
           amount: parseFloat(payment.amount.toString()),
           intervalType: 'MONTHLY',
           intervalCount: 1,
-          customerName: payment.supporterName,
+          customerName: payment.supporterName || 'Anonymous Supporter',
           customerPhone: '9999999999',
           returnUrl: `${process.env.NEXT_PUBLIC_APP_URL}/subscription/callback`,
         });

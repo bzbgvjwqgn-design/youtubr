@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 
-export default function SupportPage() {
+export const dynamic = 'force-dynamic';
+
+function SupportPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const creatorId = searchParams.get('creatorId');
@@ -139,5 +141,13 @@ export default function SupportPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SupportPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SupportPageContent />
+    </Suspense>
   );
 }

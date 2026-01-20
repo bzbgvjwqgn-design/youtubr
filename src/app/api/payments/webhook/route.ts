@@ -21,13 +21,15 @@ export async function POST(req: NextRequest) {
       await db.update(payments).set({ status: 'success' }).where(eq(payments.id, payment.id));
 
       // Add public supporter
-      await db.insert(supportersPublic).values({
-        creatorId: payment.creatorId,
-        supporterName: payment.supporterName,
-        amount: payment.amount,
-        type: payment.type as any,
-        isAnonymous: payment.isAnonymous,
-      });
+      if (payment.supporterName) {
+        await db.insert(supportersPublic).values({
+          creatorId: payment.creatorId,
+          supporterName: payment.supporterName,
+          amount: payment.amount,
+          type: payment.type as any,
+          isAnonymous: payment.isAnonymous,
+        });
+      }
 
       // Create subscription record if monthly
       if (payment.type === 'monthly') {

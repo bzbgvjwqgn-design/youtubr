@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const validation = createSupportTierSchema.safeParse(tierData);
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validation.error.errors },
+        { error: 'Validation failed', details: validation.error.flatten() },
         { status: 400 }
       );
     }

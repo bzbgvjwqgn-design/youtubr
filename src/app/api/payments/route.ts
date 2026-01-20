@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const validation = createPaymentSchema.safeParse(paymentData);
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validation.error.errors },
+        { error: 'Validation failed', details: validation.error.flatten() },
         { status: 400 }
       );
     }

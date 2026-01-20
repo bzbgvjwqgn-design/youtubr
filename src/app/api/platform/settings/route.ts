@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { platformSettings } from '@/db/schema';
+import { sql } from 'drizzle-orm';
 
 // GET: fetch settings
 // POST: update settings (admin only - auth not implemented in MVP)
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
       const [created] = await db.insert(platformSettings).values(body).returning();
       return NextResponse.json(created, { status: 201 });
     }
-    await db.update(platformSettings).set(body).where(() => true as any);
+    await db.update(platformSettings).set(body).where(sql`true`);
     const updated = await db.query.platformSettings.findFirst();
     return NextResponse.json(updated);
   } catch (error) {

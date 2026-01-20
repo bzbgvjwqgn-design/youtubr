@@ -3,6 +3,8 @@ import { CreatorCard } from '@/components/CreatorCard';
 import { SupportTierCard } from '@/components/SupportTierCard';
 import { Button } from '@/components/Button';
 
+export const dynamic = 'force-dynamic';
+
 async function fetchCreator(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/creators?creatorId=${id}`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Failed to fetch creator');
